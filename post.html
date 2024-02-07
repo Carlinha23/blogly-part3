@@ -1,0 +1,37 @@
+{% block title %}Post {{ user.firts_name }}{% endblock %}
+
+{% block content %}
+
+<h1>Make a post</h1>
+<form method="POST" action="{{ url_for('users_post_update', pk=user.id) }}">
+    <label for="title">Title:</label>
+    <input type="text" name="title" required>
+
+    <label for="content">Content:</label>
+    <textarea name="content" required></textarea>
+
+    <button type="submit">Submit</button>
+
+
+</form>
+
+{% if user.posts %}
+  <h2>Your Posts:</h2>
+  <ul>
+    {% for post in user.posts %}
+      <li>
+        <strong>{{ post.title }}</strong><br>
+        {{ post.content }}<br>
+        <!-- Edit and Delete buttons within a form -->
+        <form method="POST" action="{{ url_for('delete_post', pk=post.id) }}" style="display: inline;">
+          <button type="submit">Delete</button>
+        </form>
+        <a href="{{ url_for('edit_post', pk=post.id) }}" class="btn btn-warning btn-sm" role="button">Edit</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No posts yet.</p>
+{% endif %}
+
+{% endblock %}
